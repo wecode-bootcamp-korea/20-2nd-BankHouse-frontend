@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-export function GoToTop() {
+export default function GoToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export function GoToTop() {
   };
 
   const scrolltoTop = () => {
-    document.scrollTo({
+    window.scrollTo({
       top: 0,
     });
   };

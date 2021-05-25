@@ -56,7 +56,7 @@ function Nav(props) {
                 <CommunityMenuCategories
                   key={communityCategory.menuName}
                   to={communityCategory.path}
-                  isSelected={location.pathname === communityCategory.path}
+                  isselected={location.pathname === communityCategory.path}
                 >
                   {communityCategory.menuName}
                 </CommunityMenuCategories>
@@ -299,8 +299,8 @@ const CommunityMenuWrapper = styled.ul`
 
 const CommunityMenuCategories = styled(Link)`
   margin-right: 30px;
-  color: ${({ theme, isSelected }) =>
-    isSelected ? theme.mainBlue : theme.fontMainBlack};
+  color: ${({ theme, isselected }) =>
+    isselected ? theme.mainBlue : theme.fontMainBlack};
   font-size: 16px;
   text-decoration: none;
 
