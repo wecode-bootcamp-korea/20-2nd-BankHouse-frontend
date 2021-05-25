@@ -5,9 +5,6 @@ const GlobalStyles = createGlobalStyle`
     ${reset}
   @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@800&display=swap');
 
-  ​ body {
-    font-family: 'Jal_Onuel', cursive;
-  }
   ​ * {
     box-sizing: border-box;
     margin: 0;
