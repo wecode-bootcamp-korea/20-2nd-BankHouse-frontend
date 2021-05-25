@@ -6,6 +6,8 @@ import Main from './pages/Main/Main';
 import MainTop from './pages/MainTop/MainTop';
 import Product from './pages/Product/Product';
 import GoToTop from './components/GoToTop/GoToTop';
+import SignUp from './pages/SignUp/SignUp';
+import AddMoreUserData from './pages/SignUp/AddMoreUserData/AddMoreUserData';
 
 class Routes extends React.Component {
   render() {
@@ -17,6 +19,9 @@ class Routes extends React.Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/MainTop" component={MainTop} />
           <Route exact path="/product/:id" component={Product} />
+          <Route exact path="/product" component={Product} />
+          <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/check" component={AddMoreUserData} />
         </Switch>
         <GoToTop />
       </Router>
