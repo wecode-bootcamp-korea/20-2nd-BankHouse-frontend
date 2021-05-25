@@ -2,22 +2,26 @@ import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 
 const GlobalStyles = createGlobalStyle`
-    ${reset}
   @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@800&display=swap');
+  ${reset}
 
-  ​ * {
+  * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
-  ​ a {
+
+
+  a {
     text-decoration: none;
     color: inherit;
   }
-  ​ li {
+
+  li {
     list-style: none;
   }
-  ​ button,
+
+  button,
   input {
     border: none;
     outline: none;
