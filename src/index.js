@@ -8,10 +8,10 @@ import Routes from './Routes';
 
 ReactDOM.render(
   <>
-    <GlobalStyles />
-    <GlobalFonts />
     <ThemeProvider theme={theme}>
       <Routes />
+      <GlobalStyles />
+      <GlobalFonts />
     </ThemeProvider>
   </>,
   document.getElementById('root')
