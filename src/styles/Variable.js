@@ -1,7 +1,7 @@
 import { css } from 'styled-components';
 
-export const flexCenterAlign = css`
+export const flexSet = (justify = 'center', align = 'center') => css`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: ${justify};
+  align-items: ${align};
 `;
