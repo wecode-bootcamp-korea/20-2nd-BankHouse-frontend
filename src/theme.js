@@ -10,6 +10,7 @@ const theme = {
   fontSubNavBlack: '#424242',
   fontFilterGray: '#757575',
   fontGray: '#757575',
+  placeholderGrey: '#bdbdbd',
 };
 
 export default theme;
