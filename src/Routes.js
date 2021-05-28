@@ -8,6 +8,7 @@ import Product from './pages/Product/Product';
 import GoToTop from './components/GoToTop/GoToTop';
 import SignUp from './pages/SignUp/SignUp';
 import AddMoreUserData from './pages/SignUp/AddMoreUserData/AddMoreUserData';
+import Write from './pages/Write/Write';
 
 class Routes extends React.Component {
   render() {
@@ -22,6 +23,7 @@ class Routes extends React.Component {
           <Route exact path="/product" component={Product} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/check" component={AddMoreUserData} />
+          <Route exact path="/write" component={Write} />
         </Switch>
         <GoToTop />
       </Router>

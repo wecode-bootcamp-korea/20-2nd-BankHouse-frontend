@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { flexSet } from '../../../styles/Variable';
 
-function WritingNav(props) {
+function WritingNav({ onPost }) {
   const location = useLocation();
 
   return (
@@ -12,7 +12,7 @@ function WritingNav(props) {
         <WritingMainNavContainerInnerWrapper>
           <GoToMainPageLink to="/">은행의집</GoToMainPageLink>
           <PostingMenuButton>
-            <PostingLink to="/">올리기</PostingLink>
+            <PostingLink onClick={onPost}>올리기</PostingLink>
           </PostingMenuButton>
         </WritingMainNavContainerInnerWrapper>
       </WritingMainNavContainer>
