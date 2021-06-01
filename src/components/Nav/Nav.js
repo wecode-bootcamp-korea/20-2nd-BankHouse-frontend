@@ -11,57 +11,63 @@ function Nav(props) {
     <>
       <TopBanner />
       <MainNavContainer>
-        <GoToMainPageLink to="/">은행의집</GoToMainPageLink>
-        <LeftMenuCategoryWrapper>
-          <LeftMenuCategorySelected>커뮤니티</LeftMenuCategorySelected>
-          <LeftMenuCategoryUnselected>스토어</LeftMenuCategoryUnselected>
-          <LeftMenuCategoryUnselected>인테리어시공</LeftMenuCategoryUnselected>
-        </LeftMenuCategoryWrapper>
-        <RightMenuCategoryWrapper>
-          <SearchBoxWrapper>
-            <FaSearchIcon className="fas fa-search" />
-            <SearchBoxInput
-              aria-label="커뮤니티, 스토어 및 인테리어시공 검색"
-              placeholder="은행의집 통합검색"
-              type="search"
-            />
-            <SearchBoxButton>
-              <FaCameraIcon className="fas fa-camera" />
-            </SearchBoxButton>
-          </SearchBoxWrapper>
-          <CartIconWrapper>
-            <FaShoppingCartIcon className="fas fa-shopping-cart" />
-          </CartIconWrapper>
-          <LoginAndSignUpWrapper>
-            <GoToLoginPageLink to="/login">로그인</GoToLoginPageLink>
-            <GoToSignUpPageLink to="/signup">회원가입</GoToSignUpPageLink>
-          </LoginAndSignUpWrapper>
-          <WritingMenuWrapper>
-            <WritingMenuButton>
-              <GoToWritingPageLink to="/writing">글쓰기</GoToWritingPageLink>
-              <FaChevronDownIcon className="fas fa-chevron-down" />
-            </WritingMenuButton>
-          </WritingMenuWrapper>
-        </RightMenuCategoryWrapper>
+        <MainNavContainerInnerWrapper>
+          <GoToMainPageLink to="/">은행의집</GoToMainPageLink>
+          <LeftMenuCategoryWrapper>
+            <LeftMenuCategorySelected>커뮤니티</LeftMenuCategorySelected>
+            <LeftMenuCategoryUnselected>스토어</LeftMenuCategoryUnselected>
+            <LeftMenuCategoryUnselected>
+              인테리어시공
+            </LeftMenuCategoryUnselected>
+          </LeftMenuCategoryWrapper>
+          <RightMenuCategoryWrapper>
+            <SearchBoxWrapper>
+              <FaSearchIcon className="fas fa-search" />
+              <SearchBoxInput
+                aria-label="커뮤니티, 스토어 및 인테리어시공 검색"
+                placeholder="은행의집 통합검색"
+                type="search"
+              />
+              <SearchBoxButton>
+                <FaCameraIcon className="fas fa-camera" />
+              </SearchBoxButton>
+            </SearchBoxWrapper>
+            <CartIconWrapper>
+              <FaShoppingCartIcon className="fas fa-shopping-cart" />
+            </CartIconWrapper>
+            <LoginAndSignUpWrapper>
+              <GoToLoginPageLink to="/login">로그인</GoToLoginPageLink>
+              <GoToSignUpPageLink to="/signup">회원가입</GoToSignUpPageLink>
+            </LoginAndSignUpWrapper>
+            <WritingMenuWrapper>
+              <WritingMenuButton>
+                <GoToWritingPageLink to="/writing">글쓰기</GoToWritingPageLink>
+                <FaChevronDownIcon className="fas fa-chevron-down" />
+              </WritingMenuButton>
+            </WritingMenuWrapper>
+          </RightMenuCategoryWrapper>
+        </MainNavContainerInnerWrapper>
       </MainNavContainer>
       <BottomNavContainer>
-        <CommunityMenuWrapper>
-          {COMMUNITY_CATEGORY_LIST.map(communityCategory => {
-            return (
-              <CommunityMenuCategories
-                key={communityCategory.menuName}
-                to={communityCategory.path}
-                isSelected={location.pathname === communityCategory.path}
-              >
-                {communityCategory.menuName}
-              </CommunityMenuCategories>
-            );
-          })}
-        </CommunityMenuWrapper>
-        <RightSideMenuWrapper to="/">
-          <BankHouseLogo alt="BankHouse Logo" src="/images/logoImage.png" />
-          <BetaVersionInterior>3D인테리어(BETA)</BetaVersionInterior>
-        </RightSideMenuWrapper>
+        <BottomNavContainerInnerWrapper>
+          <CommunityMenuWrapper>
+            {COMMUNITY_CATEGORY_LIST.map(communityCategory => {
+              return (
+                <CommunityMenuCategories
+                  key={communityCategory.menuName}
+                  to={communityCategory.path}
+                  isSelected={location.pathname === communityCategory.path}
+                >
+                  {communityCategory.menuName}
+                </CommunityMenuCategories>
+              );
+            })}
+          </CommunityMenuWrapper>
+          <RightSideMenuWrapper to="/">
+            <BankHouseLogo alt="BankHouse Logo" src="/images/logoImage.png" />
+            <BetaVersionInterior>3D인테리어(BETA)</BetaVersionInterior>
+          </RightSideMenuWrapper>
+        </BottomNavContainerInnerWrapper>
       </BottomNavContainer>
     </>
   );
@@ -79,15 +85,21 @@ const COMMUNITY_CATEGORY_LIST = [
 ];
 
 const MainNavContainer = styled.div`
-  ${flexSet('start')};
   position: sticky;
   top: 0px;
   right: 0px;
   left: 0px;
-  height: 60px;
-  padding: 10px 60px;
+  height: 80px;
   background-color: #ffffff;
   border-bottom: 1px solid ${({ theme }) => theme.borderLine};
+`;
+
+const MainNavContainerInnerWrapper = styled.div`
+  ${flexSet()}
+  max-width: 1256px;
+  height: 80px;
+  margin: 0 auto;
+  padding: 10px 60px;
 `;
 
 const GoToMainPageLink = styled(Link)`
@@ -265,11 +277,17 @@ const FaChevronDownIcon = styled.i`
   font-size: 13px;
 `;
 
-const BottomNavContainer = styled.span`
-  ${flexSet('start')};
-  height: 40px;
-  padding: 10px 60px;
+const BottomNavContainer = styled.div`
+  height: 50px;
   border-bottom: 1px solid ${({ theme }) => theme.borderLine};
+`;
+
+const BottomNavContainerInnerWrapper = styled.div`
+  ${flexSet()}
+  max-width: 1256px;
+  height: 50px;
+  margin: 0 auto;
+  padding: 10px 60px;
 `;
 
 const CommunityMenuWrapper = styled.ul`
