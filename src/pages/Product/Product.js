@@ -7,11 +7,19 @@ function Product({ theme }) {
   const [inputValue, setInputValue] = useState('');
   const [commentList, setCommentList] = useState([]);
   const [opacity, setOpacity] = useState(true);
+  const [productList, setProductList] = useState({});
 
   useEffect(() => {
+    //comment API
     fetch('/data/comment.json')
+      // fetch('http://webankhouse.com')
       .then(res => res.json())
       .then(res => setCommentList(res.data.comment));
+
+    //product API
+    fetch('/data/productData.json')
+      .then(res => res.json())
+      .then(res => setProductList(res.data.product));
   }, []);
 
   const onChangeCommentInput = e => {
@@ -82,8 +90,8 @@ function Product({ theme }) {
 
   // json date 값을 "2021-05-23T23:19:20+0000" 형식으로 변경
   const postedDate = date => {
-    let timeSplit = date.slice(0, 19).split(' ');
-    let posted = new Date(`${timeSplit[0]}T${timeSplit[1]}+0000`);
+    const timeSplit = date.slice(0, 19).split(' ');
+    const posted = new Date(`${timeSplit[0]}T${timeSplit[1]}+0000`);
     return timeForToday(posted.getTime());
   };
 
@@ -92,16 +100,12 @@ function Product({ theme }) {
       <Article>
         <div>
           <ProductHeader>
-            <div>30평대</div>
-            <div>이틀 전</div>
+            <div>{productList.size}</div>
+            <div>{postedDate(`${productList.posted_time}`)}</div>
           </ProductHeader>
           <ProductImgContainer>
-            <ProductImg
-              src="https://images.unsplash.com/photo-1501924497965-792fefaea3dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80"
-              alt="product"
-            />
+            <ProductImg src={productList.imgURL} alt="product" />
           </ProductImgContainer>
-          <div></div>
         </div>
         <div>
           <CommentCount>
@@ -145,7 +149,8 @@ function Product({ theme }) {
       <Aside>
         <div>
           <LikeButton>
-            <FaHeart className="far fa-heart"></FaHeart>22
+            <FaHeart className="far fa-heart"></FaHeart>
+            {productList.liked}
           </LikeButton>
           <Profile>
             <UserInfo>
@@ -153,7 +158,7 @@ function Product({ theme }) {
                 alt="user face"
                 src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
               />
-              <Name>jiyon</Name>
+              <Name>{productList.liked_nickname}</Name>
             </UserInfo>
             <Follow>팔로우</Follow>
           </Profile>
