@@ -10,16 +10,15 @@ function Product({ theme }) {
   const [productList, setProductList] = useState({});
 
   useEffect(() => {
-    //comment API
-    fetch('/data/comment.json')
-      // fetch('http://webankhouse.com')
-      .then(res => res.json())
-      .then(res => setCommentList(res.data.comment));
-
-    //product API
+    // fetch('http://10.58.1.45:8000/posts/6')
     fetch('/data/productData.json')
       .then(res => res.json())
-      .then(res => setProductList(res.data.product));
+      .then(res => setProductList(res.results));
+
+    //comment API
+    fetch('/data/comment.json')
+      .then(res => res.json())
+      .then(res => setCommentList(res.data.comment));
   }, []);
 
   const onChangeCommentInput = e => {
@@ -88,10 +87,11 @@ function Product({ theme }) {
     return `${Math.floor(betweenTimeDay / 365)}년전`;
   };
 
-  // json date 값을 "2021-05-23T23:19:20+0000" 형식으로 변경
+  //2021-06-01T01:08:38.348Z 값을
+  //"2021-05-23T23:19:20+0000" 형식으로 변경
   const postedDate = date => {
-    const timeSplit = date.slice(0, 19).split(' ');
-    const posted = new Date(`${timeSplit[0]}T${timeSplit[1]}+0000`);
+    const timeSplit = date.slice(0, 19);
+    const posted = new Date(`${timeSplit}+0000`);
     return timeForToday(posted.getTime());
   };
 
@@ -149,18 +149,22 @@ function Product({ theme }) {
       <Aside>
         <div>
           <LikeButton>
-            <FaHeart className="far fa-heart"></FaHeart>
+            <FaHeart className="far fa-heart" />
             {productList.liked}
           </LikeButton>
           <Profile>
-            <UserInfo>
-              <Circle
-                alt="user face"
-                src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
-              />
-              <Name>{productList.liked_nickname}</Name>
-            </UserInfo>
-            <Follow>팔로우</Follow>
+            {productList.liked_nickname?.map(profile => (
+              <UserInfo>
+                <ProfileAndName>
+                  <Circle
+                    alt="user face"
+                    src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                  />
+                  <Name>{profile}</Name>
+                </ProfileAndName>
+                <Follow>팔로우</Follow>
+              </UserInfo>
+            ))}
           </Profile>
         </div>
         <Circle as="div" onClick={onClickURL}>
@@ -336,16 +340,21 @@ const LikeButton = styled.button`
 `;
 
 const Profile = styled.div`
-  ${flexSet('space-between', 'center')}
+  ${flexSet('space-between', 'space-between')}
+  flex-direction: column;
 `;
 
 const UserInfo = styled.div`
-  ${flexSet('start', 'center')}
+  ${flexSet('space-between', 'center')}
   cursor: pointer;
+  margin-bottom: 10px;
 
   &:hover {
     color: grey;
   }
+`;
+const ProfileAndName = styled.div`
+  ${flexSet()}
 `;
 
 const Name = styled.div`
