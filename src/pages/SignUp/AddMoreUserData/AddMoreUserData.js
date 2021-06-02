@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import ADD_MORE_USER_INFO from './AddMoreUserInfoData';
-import { GET_SIGNUP_API } from '../../../config';
+import React, { useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import AddMoreUserInfoData from './AddMoreUserInfoData';
 import styled from 'styled-components';
 
 function AddMoreUserData() {
@@ -36,7 +35,7 @@ function AddMoreUserData() {
 
   const sendMoreUserInfo = () => {
     const { email, nickname, proSelf } = inputMoreInfo;
-    fetch(`${{ GET_SIGNUP_API }}`, {
+    fetch(`http://webankhouse.com/users/sign-up`, {
       method: 'POST',
       body: JSON.stringify({
         access_token: localStorage.getItem('kakao_account_token'),
@@ -59,7 +58,7 @@ function AddMoreUserData() {
   return (
     <FormAddMoreInfo>
       <MainTitle>추가 정보 입력</MainTitle>
-      {ADD_MORE_USER_INFO.input.map((input, index) => {
+      {AddMoreUserInfoData.input.map((input, index) => {
         return (
           <FormAddMoreInfoForm key={index}>
             <label>
