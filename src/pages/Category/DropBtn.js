@@ -7,14 +7,14 @@ function DropBtn({ el, selectedCategory, updateSelectCategory, selectedArr }) {
     el => el.categoryName
   );
   const selectedKey = selectedArr.filter(el => el[1]).map(el => el[0]);
-  const onClick = (menu2, element) => {
-    updateSelectCategory(menu2, element);
+  const onClick = (menuNameValue, element) => {
+    updateSelectCategory(menuNameValue, element);
   };
 
   return (
     <DropDownList key={el.id} onMouseLeave={() => setOver(false)}>
       <Button onMouseOver={() => setOver(true)} id={el.id}>
-        {selectedKey.includes(el.menuName2) ? (
+        {selectedKey.includes(el.menuNameValue) ? (
           <Active>{el.menuName}</Active>
         ) : (
           <BtnText>{el.menuName}</BtnText>
@@ -27,7 +27,7 @@ function DropBtn({ el, selectedCategory, updateSelectCategory, selectedArr }) {
             return (
               <DropBarList
                 key={element.categoryId}
-                onClick={() => onClick(el.menuName2, element)}
+                onClick={() => onClick(el.menuNameValue, element)}
               >
                 {selectedValues.includes(element.categoryName) ? (
                   <Active>{element.categoryName}</Active>
