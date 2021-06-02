@@ -2,7 +2,7 @@ const CategoryListData = [
   {
     id: 1,
     menuName: '정렬',
-    menuName2: 'orderby',
+    menuNameValue: 'orderby',
     categoryList: [
       {
         categoryId: 'recent',
@@ -21,7 +21,7 @@ const CategoryListData = [
   {
     id: 2,
     menuName: '주거형태',
-    menuName2: 'livingtype',
+    menuNameValue: 'livingtype',
     categoryList: [
       {
         categoryId: 1,
@@ -40,7 +40,7 @@ const CategoryListData = [
   {
     id: 3,
     menuName: '공간',
-    menuName2: 'space',
+    menuNameValue: 'space',
     categoryList: [
       {
         categoryId: 1,
@@ -67,7 +67,7 @@ const CategoryListData = [
   {
     id: 4,
     menuName: '평수',
-    menuName2: 'size',
+    menuNameValue: 'size',
     categoryList: [
       {
         categoryId: 1,
@@ -98,7 +98,7 @@ const CategoryListData = [
   {
     id: 5,
     menuName: '스타일',
-    menuName2: 'style',
+    menuNameValue: 'style',
     categoryList: [
       {
         categoryId: 1,
@@ -117,7 +117,7 @@ const CategoryListData = [
   {
     id: 6,
     menuName: '셀프/전문',
-    menuName2: 'expert',
+    menuNameValue: 'expert',
     categoryList: [
       {
         categoryId: 'False',
