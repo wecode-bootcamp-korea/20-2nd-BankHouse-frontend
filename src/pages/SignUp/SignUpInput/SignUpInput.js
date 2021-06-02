@@ -21,7 +21,7 @@ function SignUpInput(props) {
 export default SignUpInput;
 
 const Input = styled.input`
-  width: 328px;
+  width: 360px;
   height: 38px;
   margin-top: 5px;
   padding: 0px 15px;

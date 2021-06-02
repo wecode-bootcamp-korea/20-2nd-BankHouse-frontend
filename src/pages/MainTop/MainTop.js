@@ -57,8 +57,22 @@ const StoryEntryHomeHeaderImage = styled.article`
   padding: 0 15px;
 `;
 
+const StoryMore = styled.div`
+  ${flexSet('center', 'center')}
+  width: 142px;
+  height: 52px;
+  border: 1px solid #ffffff;
+  border-radius: 2px;
+`;
+
 const StoryEntryImageWrap = styled.div`
   position: relative;
+  &:hover {
+    ${StoryMore} {
+      background-color: #00c7f5;
+      border: none;
+    }
+  }
 `;
 
 const StoryEntryImage = styled.img`
@@ -79,11 +93,12 @@ const StoryEntryContentWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  width: 767px;
-  height: 500px;
-  padding: 40px;
+  width: 777px;
+  height: 540px;
+  margin: 10px auto;
+  /* padding: 40px; */
   color: #ffffff;
-  z-index: 3;
+  z-index: 2;
 `;
 
 const StoryEntryContentProfile = styled.div`
@@ -113,14 +128,6 @@ const StoryEntryContentTitle = styled.div`
 
 const StoryEntryContentProfileName = styled.span`
   font-size: 13px;
-`;
-
-const StoryMore = styled.div`
-  ${flexSet('center', 'center')}
-  width: 142px;
-  height: 52px;
-  border: 1px solid #ffffff;
-  border-radius: 2px;
 `;
 
 const HomeHeaderBanner = styled.aside`

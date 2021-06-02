@@ -92,6 +92,7 @@ const MainNavContainer = styled.div`
   height: 80px;
   background-color: #ffffff;
   border-bottom: 1px solid ${({ theme }) => theme.borderLine};
+  z-index: 3;
 `;
 
 const MainNavContainerInnerWrapper = styled.div`
