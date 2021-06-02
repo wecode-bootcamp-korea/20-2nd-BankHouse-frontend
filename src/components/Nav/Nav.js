@@ -4,8 +4,9 @@ import styled from 'styled-components';
 import TopBanner from './TopBanner';
 import { flexSet } from '../../styles/Variable';
 
-function Nav(props) {
+function Nav() {
   const location = useLocation();
+  const isLoggedIn = localStorage.getItem('access_token');
 
   return (
     <>
@@ -36,7 +37,9 @@ function Nav(props) {
               <FaShoppingCartIcon className="fas fa-shopping-cart" />
             </CartIconWrapper>
             <LoginAndSignUpWrapper>
-              <GoToLoginPageLink to="/login">로그인</GoToLoginPageLink>
+              <GoToLoginPageLink to="/login">
+                {isLoggedIn ? '로그아웃' : '로그인'}
+              </GoToLoginPageLink>
               <GoToSignUpPageLink to="/signup">회원가입</GoToSignUpPageLink>
             </LoginAndSignUpWrapper>
             <WritingMenuWrapper>
