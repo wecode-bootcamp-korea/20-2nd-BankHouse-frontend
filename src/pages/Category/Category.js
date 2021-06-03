@@ -22,7 +22,7 @@ function Category() {
     });
     const result = queryString.join('');
     fetch(
-      `http://webankhouse.com/posts/posts?offset=${currentPage}&limit=${postsPerPage}${result}`
+      `http://webankhouse.com/posts?offset=${currentPage}&limit=${postsPerPage}${result}`
     )
       .then(response => response.json())
       .then(postdata => {
