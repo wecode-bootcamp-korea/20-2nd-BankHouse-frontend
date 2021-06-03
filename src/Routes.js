@@ -5,7 +5,6 @@ import Login from './pages/Login/Login';
 import Main from './pages/Main/Main';
 import MainTop from './pages/MainTop/MainTop';
 import Product from './pages/Product/Product';
-import GoToTop from './components/GoToTop/GoToTop';
 import SignUp from './pages/SignUp/SignUp';
 import AddMoreUserData from './pages/SignUp/AddMoreUserData/AddMoreUserData';
 
@@ -23,7 +22,6 @@ class Routes extends React.Component {
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/check" component={AddMoreUserData} />
         </Switch>
-        <GoToTop />
       </Router>
     );
   }

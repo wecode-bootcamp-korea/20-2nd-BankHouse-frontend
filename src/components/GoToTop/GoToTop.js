@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import throttle from 'lodash/throttle';
 
 export default function GoToTop() {
   const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    window.addEventListener('scroll', showButton);
-    return () => window.removeEventListener('scroll', showButton);
-  }, []);
 
   const showButton = () => {
     if (window.scrollY > 300) {
@@ -16,6 +12,13 @@ export default function GoToTop() {
       setIsVisible(false);
     }
   };
+
+  const handleThrottle = throttle(showButton, 100);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleThrottle);
+    return () => window.removeEventListener('scroll', handleThrottle);
+  }, []);
 
   const scrolltoTop = () => {
     window.scrollTo({
