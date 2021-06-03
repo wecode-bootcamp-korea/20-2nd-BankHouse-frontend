@@ -5,7 +5,7 @@ import { flexSet } from '../../styles/Variable';
 import SelectContainer from './components/SelectContainer';
 import WritingNav from '../Write/components/WritingNav';
 
-function Write({ theme, props }) {
+function Write({ history, theme, props }) {
   const [file, setFile] = useState('');
   const [previewURL, setPreviewURL] = useState('');
   const [categoryList, setCategoryList] = useState([]);
@@ -76,6 +76,7 @@ function Write({ theme, props }) {
       })
         .then(res => res.json())
         .then(data => console.log(`data`, data));
+      history.push(`/`);
     }
   };
 
