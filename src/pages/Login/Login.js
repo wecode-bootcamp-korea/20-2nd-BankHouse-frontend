@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import LoginForm from '../Login/LoginForm/LoginForm';
 import SocialLogoin from '../Login/SocialLoginLogo/SocialLogin';
+import { GET_LOGIN_API, GET_KAKAO_LOGIN_API } from '../../config';
 import styled from 'styled-components';
 const { Kakao } = window;
 
@@ -23,7 +24,7 @@ function Login() {
   const goToMain = () => {
     const { email, password } = inputLoginValue;
 
-    fetch('http://10.58.2.46:8888/users/log-in', {
+    fetch(`${GET_LOGIN_API}`, {
       method: 'POST',
       body: JSON.stringify({
         email: email.value,
@@ -35,7 +36,7 @@ function Login() {
         result.access_token &&
           localStorage.setItem('access_token', result.access_token);
         if (result.message === 'SUCCESS') {
-          console.log(`로긴성공`, '로긴성공');
+          history.push('/');
         } else {
           alert('아이디 혹은 비밀번호를 확인해주세요.');
         }
@@ -45,15 +46,8 @@ function Login() {
   const handleKakaoLogin = () => {
     Kakao.Auth.login({
       success: function (authObj) {
-        fetch('http://10.58.2.185:8000/users/log-in/kakao', {
-          method: 'GET',
-          headers: {
-            access_token: authObj.access_token,
-          },
-          // 백이랑 통신 전이라 통신 후 삭제 할 예정입니다.
-          // body: JSON.stringify({
-          //   access_token: authObj.access_token,
-          // }),
+        fetch(`${GET_KAKAO_LOGIN_API}`, {
+          headers: { Authorization: authObj.access_token },
         })
           .then(response => response.json())
           .then(result => {
@@ -85,14 +79,16 @@ function Login() {
 
   return (
     <OverallSignInPage>
-      <BankHouseLogoImage
-        alt="bankHouse Logo image"
-        src="/images/home.png"
-      ></BankHouseLogoImage>
-      <BankHouseLogo
-        alt="bankHouse Logo image"
-        src="/images/logo.png"
-      ></BankHouseLogo>
+      <Link to="/">
+        <BankHouseLogoImage
+          alt="bankHouse Logo image"
+          src="/images/home.png"
+        ></BankHouseLogoImage>
+        <BankHouseLogo
+          alt="bankHouse Logo image"
+          src="/images/logo.png"
+        ></BankHouseLogo>
+      </Link>
       <ContainerUserSignIn>
         <LoginForm
           inputLoginValue={inputLoginValue}

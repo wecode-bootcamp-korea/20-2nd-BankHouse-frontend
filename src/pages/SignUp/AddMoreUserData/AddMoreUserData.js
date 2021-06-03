@@ -1,22 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AddMoreUserInfoData from './AddMoreUserInfoData';
+import { GET_SIGNUP_API } from '../../../config';
 import styled from 'styled-components';
 
 function AddMoreUserData() {
-  const [inputMoreInfo, setInputMoreInfo] = useState({
-    email: { value: localStorage.getItem('user_email'), valid: '' },
-    nickname: { value: localStorage.getItem('user_nickname'), valid: '' },
-    proSelf: { value: '', valid: '' },
-  });
-
-  const history = useHistory();
-
   const validationFunc = {
     email: value => value.includes('@'),
     nickname: value => value.length >= 1,
     proSelf: value => value === '전문가' || value === '셀프',
   };
+
+  const [inputMoreInfo, setInputMoreInfo] = useState({
+    email: {
+      value: localStorage.getItem('user_email'),
+      valid: validationFunc.email(localStorage.getItem('user_email')),
+    },
+    nickname: {
+      value: localStorage.getItem('user_nickname'),
+      valid: validationFunc.nickname(localStorage.getItem('user_nickname')),
+    },
+    proSelf: { value: '', valid: false },
+  });
+
+  const history = useHistory();
 
   const handleMoreInput = e => {
     const valid = validationFunc[e.target.name](e.target.value);
@@ -35,13 +42,14 @@ function AddMoreUserData() {
 
   const sendMoreUserInfo = () => {
     const { email, nickname, proSelf } = inputMoreInfo;
-    fetch(`http://webankhouse.com/users/sign-up`, {
+    fetch(`${GET_SIGNUP_API}`, {
       method: 'POST',
       body: JSON.stringify({
         access_token: localStorage.getItem('kakao_account_token'),
         email: email.value,
         nickname: nickname.value,
         is_expert: proSelf.value === '전문가',
+        kakao_id: 'true',
       }),
     })
       .then(response => response.json())
@@ -130,7 +138,7 @@ const Input = styled.input`
 `;
 
 const SendMoreInfo = styled.button`
-  width: 360px;
+  width: 328px;
   height: 50px;
   margin-top: 20px;
   color: #fff;

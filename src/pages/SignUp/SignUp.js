@@ -67,7 +67,6 @@ function SignUp() {
   const handleKakaoLogin = () => {
     Kakao.Auth.login({
       scope: 'profile,account_email',
-      persistAccessToken: false,
       success: function (authObj) {
         localStorage.setItem('kakao_account_token', authObj.access_token);
         Kakao.API.request({
@@ -82,25 +81,6 @@ function SignUp() {
             history.push('/check');
           },
         });
-        // 밑에 부뷴은 혹시 몰라서 남겨 두었습니다. 백이랑 통신 해보고 성공하면 지울 예정입니다.
-        //fetch('http://10.58.2.46:8888/users/sign-up', {
-        //   method: 'POST',
-        //   body: JSON.stringify({
-        //     access_token: authObj.access_token,
-        //     kakao_account: authObj.kakao_account,
-        //   }),
-        // })
-        //   .then(response => response.json())
-        //   .then(result => {
-        //     localStorage.setItem('Kakao_token', result.access_token);
-        //     if (result.message === 'SUCCESS') {
-        //       console.log(`로긴성공`, '로긴성공');
-        //       history.push('/check');
-        //     } else {
-        //       alert('입력 값을 확인해주세요');
-        //       console.log(`result`, result);
-        //     }
-        //   });
       },
       fail: function (err) {
         alert(JSON.stringify(err));
