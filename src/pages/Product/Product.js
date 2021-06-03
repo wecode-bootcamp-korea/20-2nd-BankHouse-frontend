@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import { withRouter, useLocation } from 'react-router-dom';
+import styled, { css } from 'styled-components/macro';
 import { flexSet } from '../../styles/Variable';
+import Nav from '../../components/Nav/Nav';
+import Footer from '../../components/Footer/Footer';
 
-function Product({ theme }) {
+function Product({ history, theme }) {
+  const location = useLocation();
   const [inputValue, setInputValue] = useState('');
   const [commentList, setCommentList] = useState([]);
   const [opacity, setOpacity] = useState(true);
   const [productList, setProductList] = useState({});
+  const path = location.pathname.replace('/product/', '');
 
   useEffect(() => {
-    // fetch('http://10.58.1.45:8000/posts/6')
-    fetch('/data/productData.json')
+    //product API
+    fetch(`http://webankhouse.com/posts/${path}`)
       .then(res => res.json())
       .then(res => setProductList(res.results));
 
     //comment API
-    fetch('/data/comment.json')
+    fetch(`http://webankhouse.com/posts/comments/${path}`)
       .then(res => res.json())
-      .then(res => setCommentList(res.data.comment));
-  }, []);
+      .then(res => setCommentList(res.data));
+  }, [path]);
 
   const onChangeCommentInput = e => {
     setInputValue(e.target.value);
@@ -28,33 +32,39 @@ function Product({ theme }) {
 
   const onSubmitComment = e => {
     e.preventDefault();
-    //TODO: 백엔드 API 완성 후 구체화 예정
-    // fetch(API, {
-    // method: 'POST',
-    //   headers: {
-    //     Authorization: localStorage.getItem('accessToken'),
-    //   },
-    //  body: JSON.stringify({
-    //   }),
-    // })
-    // .then(res => res.json())
-    // .then(data => )
+    fetch(`http://webankhouse.com/posts/comments`, {
+      method: 'POST',
+      headers: {
+        Authorization: localStorage.getItem('access_token'),
+      },
+      body: JSON.stringify({
+        post_id: path,
+        content: inputValue,
+      }),
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.message === 'SUCCESS') {
+          fetch(`http://webankhouse.com/posts/comments/${path}`)
+            .then(res => res.json())
+            .then(res => setCommentList(res.data));
+        }
+      });
   };
 
-  const onClickCommentHeart = () => {
-    //TODO: 백엔드 API 완성 후 구체화 예정
-    // fetch(API, {
-    // method: 'POST',
-    //   headers: {
-    //     Authorization: localStorage.getItem('accessToken'),
-    //   },
-    //  body: JSON.stringify({
-    // })
-    // .then(res => res.json())
-    // .then(data => )
+  const onClickArticleDelete = () => {
+    history.push(`/`);
+    fetch(`http://webankhouse.com/posts/${path}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: localStorage.getItem('access_token'),
+      },
+    })
+      .then(res => res.json())
+      .then(data => console.log(`data`, data));
   };
 
-  const onClickURL = e => {
+  const onCopyURL = () => {
     navigator.clipboard.writeText(window.location.href);
     alert('클립보드에 복사되었습니다.');
   };
@@ -96,82 +106,88 @@ function Product({ theme }) {
   };
 
   return (
-    <Wrapper>
-      <Article>
-        <div>
-          <ProductHeader>
-            <div>{productList.size}</div>
-            <div>{postedDate(`${productList.posted_time}`)}</div>
-          </ProductHeader>
-          <ProductImgContainer>
-            <ProductImg src={productList.imgURL} alt="product" />
-          </ProductImgContainer>
-        </div>
-        <div>
-          <CommentCount>
-            댓글 <CommentCountNum>{commentList.length}</CommentCountNum>
-          </CommentCount>
-          <InputContainer>
-            <FaSmile className="fas fa-smile"></FaSmile>
-            <form onSubmit={onSubmitComment}>
-              <CommentInput
-                type="text"
-                name="comment"
-                placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다 :)"
-                value={inputValue}
-                onChange={onChangeCommentInput}
-              />
-              <Register alert={opacity}>등록</Register>
-            </form>
-          </InputContainer>
-          {commentList.map(({ id, img_url, user, content, date, like }) => {
-            return (
-              <Comment key={id}>
-                <Circle alt="user face" src={img_url} />
-                <CommentFeed>
-                  <UserAndContent>
-                    <User>{user}</User>
-                    <div>{content}</div>
-                  </UserAndContent>
-                  <CommentInfo>
-                    <Time>{postedDate(date)}</Time>
-                    <CommentHeart onClick={onClickCommentHeart}>
-                      <FaHeart className="far fa-heart"></FaHeart>
-                      <span>{like}</span>
-                    </CommentHeart>
-                  </CommentInfo>
-                </CommentFeed>
-              </Comment>
-            );
-          })}
-        </div>
-      </Article>
-      <Aside>
-        <div>
-          <LikeButton>
-            <FaHeart className="far fa-heart" />
-            {productList.liked}
-          </LikeButton>
-          <Profile>
-            {productList.liked_nickname?.map(profile => (
-              <UserInfo>
-                <ProfileAndName>
-                  <Circle
-                    alt="user face"
-                    src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
-                  />
-                  <Name>{profile}</Name>
-                </ProfileAndName>
-                <Follow>팔로우</Follow>
-              </UserInfo>
-            ))}
-          </Profile>
-        </div>
-        <Circle as="div" onClick={onClickURL}>
-          URL
-        </Circle>
-      </Aside>
-    </Wrapper>
+    <>
+      <Nav />
+      <Wrapper>
+        <Article>
+          <div>
+            <ProductHeader>
+              <div>{productList.size}</div>
+              <div>{postedDate(`${productList.posted_time}`)}</div>
+            </ProductHeader>
+            <ProductImgContainer>
+              <ProductImg src={productList.imgURL} alt="product" />
+            </ProductImgContainer>
+          </div>
+          <div>
+            <CommentCount>
+              댓글
+              <CommentCountNum>{commentList.length}</CommentCountNum>
+            </CommentCount>
+            <InputContainer>
+              <FaSmile className="fas fa-smile"></FaSmile>
+              <form onSubmit={onSubmitComment}>
+                <CommentInput
+                  type="text"
+                  name="comment"
+                  placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다 :)"
+                  value={inputValue}
+                  onChange={onChangeCommentInput}
+                />
+                <Register alert={opacity}>등록</Register>
+              </form>
+            </InputContainer>
+            {commentList?.map(({ id, img_url, nickname, comment, date }) => {
+              return (
+                <Comment key={id}>
+                  <Circle alt="user face" src={'/images/user.png'} />
+                  <CommentFeed>
+                    <UserAndContent>
+                      <User>{nickname}</User>
+                      <div>{comment}</div>
+                    </UserAndContent>
+                    <CommentInfo>
+                      <Time>{postedDate(date)}</Time>
+                      <CommentHeart>
+                        <FaHeart className="far fa-heart"></FaHeart>
+                      </CommentHeart>
+                    </CommentInfo>
+                  </CommentFeed>
+                </Comment>
+              );
+            })}
+          </div>
+        </Article>
+        <Aside>
+          <div>
+            <LikeAndDelete>
+              <LikeBtn>
+                <FaHeart className="far fa-heart" />
+                {productList.liked}
+              </LikeBtn>
+              <DeleteBtn onClick={onClickArticleDelete}>
+                <i className="fas fa-trash"></i>
+              </DeleteBtn>
+            </LikeAndDelete>
+            <Profile>
+              {productList.liked_nickname?.map(profile => (
+                <UserInfo key={Math.random()}>
+                  <ProfileAndName>
+                    <Circle alt="user face" src="/images/user.png" />
+                    <Name>{profile}</Name>
+                  </ProfileAndName>
+                  <Follow>팔로우</Follow>
+                </UserInfo>
+              ))}
+            </Profile>
+          </div>
+          <Circle as="div" onClick={onCopyURL}>
+            URL
+          </Circle>
+        </Aside>
+      </Wrapper>
+      <Footer />
+    </>
   );
 }
 
@@ -218,6 +234,7 @@ const CommentCount = styled.div`
 `;
 
 const CommentCountNum = styled.span`
+  margin-left: 10px;
   color: ${props => props.theme.mainBlue};
 `;
 
@@ -325,14 +342,35 @@ const FaHeart = styled.div`
   color: ${props => props.theme.fontMainBlack};
 `;
 
-const LikeButton = styled.button`
-  width: 260px;
+const LikeAndDelete = styled.div`
+  ${flexSet('space-between')}
+  width: 100%;
+`;
+
+const LikeBtn = styled.button`
+  width: 100px;
+  height: 50px;
+  margin-bottom: 25px;
+  margin-right: 20px;
+  line-height: 50px;
+  background-color: ${props => props.theme.backgroundGrey};
+  border-radius: 10px;
+  font-size: 15px;
+
+  &:hover {
+    background-color: ${props => props.theme.borderLine};
+  }
+`;
+
+const DeleteBtn = styled.button`
+  width: 100px;
   height: 50px;
   margin-bottom: 25px;
   line-height: 50px;
   background-color: ${props => props.theme.backgroundGrey};
   border-radius: 10px;
   font-size: 15px;
+  border-color: red;
 
   &:hover {
     background-color: ${props => props.theme.borderLine};

@@ -44,7 +44,7 @@ function Nav() {
             </LoginAndSignUpWrapper>
             <WritingMenuWrapper>
               <WritingMenuButton>
-                <GoToWritingPageLink to="/writing">글쓰기</GoToWritingPageLink>
+                <GoToWritingPageLink to="/write">글쓰기</GoToWritingPageLink>
                 <FaChevronDownIcon className="fas fa-chevron-down" />
               </WritingMenuButton>
             </WritingMenuWrapper>
