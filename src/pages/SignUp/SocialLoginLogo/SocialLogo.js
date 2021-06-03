@@ -70,7 +70,7 @@ const facebookIconSvg = (
     viewBox="0 0 48 48"
     preserveAspectRatio="xMidYMid meet"
   >
-    <g fill="none" fill-rule="evenodd">
+    <g fill="none" fillRull="evenodd">
       <path
         fill="#3B5998"
         d="M0 24C0 10.745 10.745 0 24 0s24 10.745 24 24-10.745 24-24 24S0 37.255 0 24z"
@@ -90,7 +90,7 @@ const naverIconSvg = (
     viewBox="0 0 48 48"
     preserveAspectRatio="xMidYMid meet"
   >
-    <g fill="none" fill-rule="evenodd">
+    <g fill="none" fillRull="evenodd">
       <path
         fill="#00C63B"
         d="M0 24C0 10.745 10.745 0 24 0s24 10.745 24 24-10.745 24-24 24S0 37.255 0 24z"
@@ -110,7 +110,7 @@ const kakaoIconSvg = (
     viewBox="0 0 48 48"
     preserveAspectRatio="xMidYMid meet"
   >
-    <g fill="none" fill-rule="evenodd">
+    <g fill="none" fillRull="evenodd">
       <path
         fill="#FFEB00"
         d="M0 24C0 10.745 10.745 0 24 0s24 10.745 24 24-10.745 24-24 24S0 37.255 0 24z"

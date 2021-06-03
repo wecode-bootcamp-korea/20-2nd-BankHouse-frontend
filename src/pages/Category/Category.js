@@ -3,6 +3,7 @@ import CategoryList from '../Category/CategoryList';
 import CategoryCard from './CategoryCard';
 import Pagination from './Pagination/Pagination';
 import categoryListData from './CategoryListData';
+import { GET_BASE_URL } from '../../config';
 
 function Category() {
   const [cardData, setCardData] = useState([]);
@@ -22,7 +23,7 @@ function Category() {
     });
     const result = queryString.join('');
     fetch(
-      `http://webankhouse.com/posts?offset=${currentPage}&limit=${postsPerPage}${result}`
+      `${GET_BASE_URL}/posts?offset=${currentPage}&limit=${postsPerPage}${result}`
     )
       .then(response => response.json())
       .then(postdata => {
