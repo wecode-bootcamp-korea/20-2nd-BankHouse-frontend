@@ -22,27 +22,21 @@ function Category() {
     });
     const result = queryString.join('');
     fetch(
-      `http://webankhouse.com/posts/posts?offset=${currentPage}&limit=${postsPerPage}${result}`
+      `http://webankhouse.com/posts?offset=${currentPage}&limit=${postsPerPage}${result}`
     )
       .then(response => response.json())
       .then(postdata => {
-        setCardData([...postdata.results, ...cardData]);
+        setCardData([...cardData, ...postdata.results]);
         setPostCount(postdata.post_count);
       });
   };
 
-  const updateSelectCategory = (category, element) => {
-    setSelectedCategory({
-      ...selectedCategory,
-      [category]: element,
-    });
+  const updateSelectCategory = (category, categoryName) => {
+    setSelectedCategory({ ...selectedCategory, [category]: categoryName });
   };
 
   const deleteSelectCategory = category => {
-    setSelectedCategory({
-      ...selectedCategory,
-      [category]: '',
-    });
+    setSelectedCategory({ ...selectedCategory, [category]: '' });
   };
 
   const clearCategoryData = () => {
