@@ -6,7 +6,7 @@ const CategoryListData = [
     categoryList: [
       {
         categoryId: 'recent',
-        categoryName: '최근 인기순',
+        categoryName: '최신순',
       },
       {
         categoryId: 'hit',
