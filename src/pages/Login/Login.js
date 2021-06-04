@@ -51,7 +51,7 @@ function Login() {
         })
           .then(response => response.json())
           .then(result => {
-            localStorage.setItem('Kakao_token', result.access_token);
+            localStorage.setItem('access_token', result.access_token);
             if (result.message === 'SUCCESS') {
               history.push('/');
             } else {
