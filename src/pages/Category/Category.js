@@ -19,7 +19,7 @@ function Category() {
 
   const fetchCardData = () => {
     const queryString = Object.entries(selectedCategory).map(el => {
-      return `&${el[0]}=${el[1].categoryId}`;
+      return el[1].categoryId ? `&${el[0]}=${el[1].categoryId}` : '';
     });
     const result = queryString.join('');
     fetch(
@@ -27,7 +27,7 @@ function Category() {
     )
       .then(response => response.json())
       .then(postdata => {
-        setCardData([...cardData, ...postdata.results]);
+        setCardData(postdata.results);
         setPostCount(postdata.post_count);
       });
   };
@@ -44,14 +44,6 @@ function Category() {
     setSelectedCategory({});
   };
 
-  const currentPosts = num => {
-    const indexOfLast = currentPage * postsPerPage;
-    const indexOfFirst = indexOfLast - postsPerPage;
-    let currentPosts = 0;
-    currentPosts = num.slice(indexOfFirst, indexOfLast);
-    return currentPosts;
-  };
-
   return (
     <>
       <CategoryList
@@ -61,7 +53,7 @@ function Category() {
         clearCategoryData={clearCategoryData}
         categoryListData={categoryListData}
       />
-      <CategoryCard cardData={currentPosts(cardData)} />
+      <CategoryCard cardData={cardData} />
 
       <Pagination
         pageNumber={pageNumber}
