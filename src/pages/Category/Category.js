@@ -23,7 +23,7 @@ function Category() {
     });
     const result = queryString.join('');
     fetch(
-      `${GET_BASE_URL}/posts?offset=${currentPage}&limit=${postsPerPage}${result}`
+      `${GET_BASE_URL}:8002/posts?offset=${currentPage}&limit=${postsPerPage}${result}`
     )
       .then(response => response.json())
       .then(postdata => {

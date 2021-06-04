@@ -53,15 +53,14 @@ function Product({ history, theme }) {
   };
 
   const onClickArticleDelete = () => {
-    history.push(`/`);
-    fetch(`http://webankhouse.com/posts/${path}`, {
+    console.log(`path`, path);
+    fetch(`http://webankhouse.com:8002/posts/${path}`, {
       method: 'DELETE',
       headers: {
         Authorization: localStorage.getItem('access_token'),
       },
-    })
-      .then(res => res.json())
-      .then(data => console.log(`data`, data));
+    }).then(data => console.log(`data`, data));
+    history.push(`/`);
   };
 
   const onCopyURL = () => {
@@ -122,7 +121,7 @@ function Product({ history, theme }) {
           <div>
             <CommentCount>
               댓글
-              <CommentCountNum>{commentList.length}</CommentCountNum>
+              <CommentCountNum>{/* {commentList.length} */}</CommentCountNum>
             </CommentCount>
             <InputContainer>
               <FaSmile className="fas fa-smile"></FaSmile>
