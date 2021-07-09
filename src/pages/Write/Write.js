@@ -67,8 +67,7 @@ function Write({ history, theme, props }) {
       categoryData.append('info', selectedInfo);
       categoryData.append('image', file);
 
-      // fetch('http://10.58.5.18:8000/posts/post', {
-      fetch('http://webankhouse.com:8002/posts/post', {
+      fetch('http://webankhouse.com/posts/post', {
         method: 'POST',
         headers: {
           Authorization: localStorage.getItem('access_token'),
