@@ -1,17 +1,43 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-import TopBanner from './TopBanner';
 import { flexSet } from '../../styles/Variable';
+import styled from 'styled-components/macro';
+import TopBanner from './TopBanner';
 
 function Nav() {
   const location = useLocation();
   const isLoggedIn = localStorage.getItem('access_token');
 
+  const COMMUNITY_CATEGORY_LIST = [
+    { menuName: '홈', path: '/' },
+    { menuName: '사진', path: '/photo' },
+    { menuName: '집들이', path: '/houseparty' },
+    { menuName: '노하우', path: '/knowhow' },
+    { menuName: '전문가집들이', path: '/experthouseparty' },
+    { menuName: '셀프가이드', path: '/selfguide' },
+    { menuName: '질문과답변', path: '/questionandanswer' },
+    { menuName: '이벤트', path: '/event' },
+  ];
+
   return (
     <>
       <TopBanner />
-      <MainNavContainer>
+      <MainNav>
+        <div>은행의집</div>
+        <nav>
+          <div>커뮤니티</div>
+          <div>스토어</div>
+          <div>인테리어시공</div>
+        </nav>
+        <div>오늘의집 통합검색</div>
+        <div>
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+        <div>로그인</div>
+        <div>회원가입</div>
+        <button>글쓰기</button>
+      </MainNav>
+      {/* <MainNavContainer>
         <MainNavContainerInnerWrapper>
           <GoToMainPageLink to="/">은행의집</GoToMainPageLink>
           <LeftMenuCategoryWrapper>
@@ -50,7 +76,8 @@ function Nav() {
             </WritingMenuWrapper>
           </RightMenuCategoryWrapper>
         </MainNavContainerInnerWrapper>
-      </MainNavContainer>
+      </MainNavContainer> */}
+
       <BottomNavContainer>
         <BottomNavContainerInnerWrapper>
           <CommunityMenuWrapper>
@@ -76,149 +103,138 @@ function Nav() {
   );
 }
 
-const COMMUNITY_CATEGORY_LIST = [
-  { menuName: '홈', path: '/' },
-  { menuName: '사진', path: '/photo' },
-  { menuName: '집들이', path: '/houseparty' },
-  { menuName: '노하우', path: '/knowhow' },
-  { menuName: '전문가집들이', path: '/experthouseparty' },
-  { menuName: '셀프가이드', path: '/selfguide' },
-  { menuName: '질문과답변', path: '/questionandanswer' },
-  { menuName: '이벤트', path: '/event' },
-];
+// const MainNavContainer = styled.div`
+//   position: sticky;
+//   top: 0px;
+//   right: 0px;
+//   left: 0px;
+//   height: 80px;
+//   background-color: #ffffff;
+//   border-bottom: 1px solid ${({ theme }) => theme.borderLine};
+//   z-index: 3;
+// `;
 
-const MainNavContainer = styled.div`
-  position: sticky;
-  top: 0px;
-  right: 0px;
-  left: 0px;
-  height: 80px;
-  background-color: #ffffff;
-  border-bottom: 1px solid ${({ theme }) => theme.borderLine};
-  z-index: 3;
-`;
+// const MainNavContainerInnerWrapper = styled.div`
+//   ${flexSet()}
+//   max-width: 1256px;
+//   height: 80px;
+//   margin: 0 auto;
+//   padding: 10px 60px;
+// `;
 
-const MainNavContainerInnerWrapper = styled.div`
-  ${flexSet()}
-  max-width: 1256px;
-  height: 80px;
-  margin: 0 auto;
-  padding: 10px 60px;
-`;
+// const GoToMainPageLink = styled(Link)`
+//   width: 15%;
+//   font-family: '잘풀리는오늘';
+//   font-size: 26px;
+//   color: inherit;
+//   text-decoration: none;
 
-const GoToMainPageLink = styled(Link)`
-  width: 15%;
-  font-family: '잘풀리는오늘';
-  font-size: 26px;
-  color: inherit;
-  text-decoration: none;
+//   &:hover {
+//     opacity: 0.7;
+//     cursor: pointer;
+//   }
+// `;
 
-  &:hover {
-    opacity: 0.7;
-    cursor: pointer;
-  }
-`;
+// const LeftMenuCategoryWrapper = styled.ul`
+//   display: flex;
+//   width: 35%;
+//   color: ${({ theme }) => theme.fontMainBlack};
+//   font-size: 18px;
+//   font-weight: 700;
+// `;
 
-const LeftMenuCategoryWrapper = styled.ul`
-  display: flex;
-  width: 35%;
-  color: ${({ theme }) => theme.fontMainBlack};
-  font-size: 18px;
-  font-weight: 700;
-`;
+// const LeftMenuCategorySelected = styled.li`
+//   margin-right: 15px;
+//   color: ${({ theme }) => theme.mainBlue};
 
-const LeftMenuCategorySelected = styled.li`
-  margin-right: 15px;
-  color: ${({ theme }) => theme.mainBlue};
+//   &:hover {
+//     cursor: pointer;
+//   }
+// `;
 
-  &:hover {
-    cursor: pointer;
-  }
-`;
+// const LeftMenuCategoryUnselected = styled(
+//   LeftMenuCategorySelected.withComponent('li')
+// )`
+//   color: ${({ theme }) => theme.fontMainBlack};
+// `;
 
-const LeftMenuCategoryUnselected = styled(
-  LeftMenuCategorySelected.withComponent('li')
-)`
-  color: ${({ theme }) => theme.fontMainBlack};
-`;
+// const RightMenuCategoryWrapper = styled.div`
+//   ${flexSet('flex-end')};
+//   width: 60%;
+// `;
 
-const RightMenuCategoryWrapper = styled.div`
-  ${flexSet('flex-end')};
-  width: 60%;
-`;
+// const SearchBoxWrapper = styled.div`
+//   ${flexSet('start')};
+//   position: relative;
+//   width: 55%;
+//   margin-right: 8px;
 
-const SearchBoxWrapper = styled.div`
-  ${flexSet('start')};
-  position: relative;
-  width: 55%;
-  margin-right: 8px;
+//   &:hover {
+//     cursor: text;
+//   }
+// `;
 
-  &:hover {
-    cursor: text;
-  }
-`;
+// const FaSearchIcon = styled.i`
+//   position: absolute;
+//   transform: translateY(5%);
+//   left: 7px;
+//   color: ${({ theme }) => theme.fontMainBlack};
+// `;
 
-const FaSearchIcon = styled.i`
-  position: absolute;
-  transform: translateY(5%);
-  left: 7px;
-  color: ${({ theme }) => theme.fontMainBlack};
-`;
+// const SearchBoxInput = styled.input`
+//   width: 100%;
+//   padding: 7px 30px;
+//   border: 1px solid #dbdbdb;
+//   border-radius: 5px;
 
-const SearchBoxInput = styled.input`
-  width: 100%;
-  padding: 7px 30px;
-  border: 1px solid #dbdbdb;
-  border-radius: 5px;
+//   &:hover {
+//     cursor: text;
+//   }
+// `;
 
-  &:hover {
-    cursor: text;
-  }
-`;
+// const SearchBoxButton = styled.button`
+//   position: absolute;
+//   top: 0px;
+//   transform: translateY(30%);
+//   right: 5px;
+//   font-size: 20px;
+//   background-color: transparent;
+//   border: 0;
 
-const SearchBoxButton = styled.button`
-  position: absolute;
-  top: 0px;
-  transform: translateY(30%);
-  right: 5px;
-  font-size: 20px;
-  background-color: transparent;
-  border: 0;
+//   &:hover {
+//     cursor: pointer;
+//     color: ${({ theme }) => theme.mainBlue};
+//   }
+// `;
 
-  &:hover {
-    cursor: pointer;
-    color: ${({ theme }) => theme.mainBlue};
-  }
-`;
+// const FaCameraIcon = styled.i`
+//   position: absolute;
+//   top: 0px;
+//   transform: translateY(30%);
+//   right: 5px;
+//   color: ${({ theme }) => theme.fontMainBlack};
+//   font-size: 20px;
+// `;
 
-const FaCameraIcon = styled.i`
-  position: absolute;
-  top: 0px;
-  transform: translateY(30%);
-  right: 5px;
-  color: ${({ theme }) => theme.fontMainBlack};
-  font-size: 20px;
-`;
+// const CartIconWrapper = styled.div`
+//   width: 5%;
+//   color: ${({ theme }) => theme.fontMainBlack};
 
-const CartIconWrapper = styled.div`
-  width: 5%;
-  color: ${({ theme }) => theme.fontMainBlack};
+//   &:hover {
+//     cursor: pointer;
+//     color: ${({ theme }) => theme.mainBlue};
+//   }
+// `;
 
-  &:hover {
-    cursor: pointer;
-    color: ${({ theme }) => theme.mainBlue};
-  }
-`;
+// const FaShoppingCartIcon = styled.i`
+//   ${flexSet('center', 'start')};
+// `;
 
-const FaShoppingCartIcon = styled.i`
-  ${flexSet('center', 'start')};
-`;
-
-const LoginAndSignUpWrapper = styled.div`
-  ${flexSet('space-between')};
-  width: 25%;
-  margin: 0px 5px;
-`;
+// const LoginAndSignUpWrapper = styled.div`
+//   ${flexSet('space-between')};
+//   width: 25%;
+//   margin: 0px 5px;
+// `;
 
 const GoToLoginPageLink = styled(Link)`
   width: 43%;
