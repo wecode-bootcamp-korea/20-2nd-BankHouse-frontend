@@ -13,6 +13,7 @@ function Product({ history, theme }) {
   const [opacity, setOpacity] = useState(true);
   const [productList, setProductList] = useState({});
   const path = location.pathname.replace('/product/', '');
+  //useParams로 하면 replace 안해도 되지 않았을까?
 
   useEffect(() => {
     //product API
@@ -69,32 +70,31 @@ function Product({ history, theme }) {
     alert('클립보드에 복사되었습니다.');
   };
 
-  const timeForToday = postedTime => {
+  const timeFromNow = postedTime => {
     const today = new Date();
-    const timeValue = new Date(postedTime);
+    const postedDate = new Date(postedTime);
 
-    const betweenTime = Math.floor(
-      (today.getTime() - timeValue.getTime()) / 1000 / 60
+    const minutesDiff = Math.floor(
+      (today.getTime() - postedDate.getTime()) / 1000 / 60
     );
-    if (betweenTime < 1) return '방금전';
-    if (betweenTime < 60) {
-      return `${betweenTime}분전`;
-    }
+    const hourDiff = Math.floor(minutesDiff / 60);
+    const dayDiff = Math.floor(minutesDiff / 60 / 24);
+    const monthDiff = Math.floor(minutesDiff / 60 / 24 / 30);
 
-    const betweenTimeHour = Math.floor(betweenTime / 60);
-    const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-    const betweenTimeMonth = Math.floor(betweenTime / 60 / 24 / 30);
-
-    if (betweenTimeHour < 24) {
-      return `${betweenTimeHour}시간전`;
+    if (minutesDiff < 1) return '방금전';
+    if (minutesDiff < 60) {
+      return `${minutesDiff}분 전`;
     }
-    if (betweenTimeDay < 31) {
-      return `${betweenTimeDay}일전`;
+    if (hourDiff < 24) {
+      return `${hourDiff}시간 전`;
     }
-    if (betweenTimeMonth < 12) {
-      return `${betweenTimeMonth}달전`;
+    if (dayDiff < 31) {
+      return `${dayDiff}일 전`;
     }
-    return `${Math.floor(betweenTimeDay / 365)}년전`;
+    if (monthDiff < 12) {
+      return `${monthDiff}달 전`;
+    }
+    return `${Math.floor(dayDiff / 365)}년 전`;
   };
 
   //2021-06-01T01:08:38.348Z 값을
@@ -102,7 +102,7 @@ function Product({ history, theme }) {
   const postedDate = date => {
     const timeSplit = date.slice(0, 19);
     const posted = new Date(`${timeSplit}+0000`);
-    return timeForToday(posted.getTime());
+    return timeFromNow(posted.getTime());
   };
 
   return (
@@ -122,7 +122,7 @@ function Product({ history, theme }) {
           <div>
             <CommentCount>
               댓글
-              <CommentCountNum>{/* {commentList.length} */}</CommentCountNum>
+              <CommentCountNum>{commentList?.length}</CommentCountNum>
             </CommentCount>
             <InputContainer>
               <FaSmile className="fas fa-smile"></FaSmile>
