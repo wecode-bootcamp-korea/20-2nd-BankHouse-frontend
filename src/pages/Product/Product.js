@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components/macro';
 import { flexSet } from '../../styles/Variable';
 import Nav from '../../components/Nav/Nav';
 import Footer from '../../components/Footer/Footer';
+import { GET_BASE_URL } from '../../config';
 
 function Product({ history, theme }) {
   const location = useLocation();
@@ -16,12 +17,12 @@ function Product({ history, theme }) {
 
   useEffect(() => {
     //product API
-    fetch(`http://webankhouse.com/posts/${path}`)
+    fetch(`${GET_BASE_URL}/posts/${path}`)
       .then(res => res.json())
       .then(res => setProductList(res.results));
 
     //comment API
-    fetch(`http://webankhouse.com/posts/comments/${path}`)
+    fetch(`${GET_BASE_URL}/posts/comments/${path}`)
       .then(res => res.json())
       .then(res => setCommentList(res.data));
   }, [path]);
@@ -33,7 +34,7 @@ function Product({ history, theme }) {
 
   const onSubmitComment = e => {
     e.preventDefault();
-    fetch(`http://webankhouse.com/posts/comments`, {
+    fetch(`${GET_BASE_URL}/posts/comments`, {
       method: 'POST',
       headers: {
         Authorization: localStorage.getItem('access_token'),
@@ -46,7 +47,7 @@ function Product({ history, theme }) {
       .then(res => res.json())
       .then(res => {
         if (res.message === 'SUCCESS') {
-          fetch(`http://webankhouse.com/posts/comments/${path}`)
+          fetch(`${GET_BASE_URL}/posts/comments/${path}`)
             .then(res => res.json())
             .then(res => setCommentList(res.data));
         }
@@ -55,7 +56,7 @@ function Product({ history, theme }) {
 
   const onClickArticleDelete = () => {
     console.log(`path`, path);
-    fetch(`http://webankhouse.com:8002/posts/${path}`, {
+    fetch(`${GET_BASE_URL}/posts/${path}`, {
       method: 'DELETE',
       headers: {
         Authorization: localStorage.getItem('access_token'),
