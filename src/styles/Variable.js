@@ -8,5 +8,5 @@ export const flexSet = (justify = 'center', align = 'center') => css`
 
 export const mediaQuery = {
   BREAK_POINT_MOBILE: 760,
-  BREAK_POINT_TABLET: 1020,
+  BREAK_POINT_TABLET: 1060,
 };

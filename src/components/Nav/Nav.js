@@ -25,24 +25,26 @@ function Nav({ theme }) {
       <TopBanner />
       <TopNav>
         <NavLogo to="/">은행의집</NavLogo>
-        <Gnb>
-          <GnbMenu current>커뮤니티</GnbMenu>
-          <GnbMenu>스토어</GnbMenu>
-          <GnbMenu>인테리어시공</GnbMenu>
-        </Gnb>
-        <NavSearch>
-          <NavSearchText placeholder="은행의집 통합검색" />
-          <MagnifyingIcon className="fas fa-search" />
-          <CameraIcon className="fas fa-camera" />
-        </NavSearch>
-        <CartAndLogin>
-          <CartIcon className="fas fa-shopping-cart" />
-          <LoginIcon>
-            <NavLogin>로그인</NavLogin>
-            <NavLogin>회원가입</NavLogin>
-          </LoginIcon>
-        </CartAndLogin>
-        <NavWriteBtn>글쓰기</NavWriteBtn>
+        <MobileHide>
+          <Gnb>
+            <GnbMenu current>커뮤니티</GnbMenu>
+            <GnbMenu>스토어</GnbMenu>
+            <GnbMenu>인테리어시공</GnbMenu>
+          </Gnb>
+          <NavSearch>
+            <NavSearchText placeholder="은행의집 통합검색" />
+            <MagnifyingIcon className="fas fa-search" />
+            <CameraIcon className="fas fa-camera" />
+          </NavSearch>
+          <CartAndLogin>
+            <CartIcon className="fas fa-shopping-cart" />
+            <LoginIcon>
+              <NavLogin>{isLoggedIn ? '로그아웃' : '로그인'}</NavLogin>
+              <NavLogin>회원가입</NavLogin>
+            </LoginIcon>
+          </CartAndLogin>
+          <NavWriteBtn>글쓰기</NavWriteBtn>
+        </MobileHide>
       </TopNav>
       <BottomNavContainer>
         <BottomNavContainerInnerWrapper>
@@ -72,15 +74,23 @@ function Nav({ theme }) {
 const TopNav = styled.div`
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
   flex: 1 0 auto;
   padding: 10px 60px;
   height: 80px;
   margin: 0 auto;
+  /* margin: 0 9px; */
   max-width: 1256px;
+  min-width: 805px;
 
   @media only screen and (max-width: ${mediaQuery.BREAK_POINT_TABLET}px) {
     padding: 10px 40px;
+  }
+
+  @media only screen and (max-width: ${mediaQuery.BREAK_POINT_MOBILE}px) {
+    text-align: center;
+    left: 50%;
+    position: relative;
+    transform: translateX(-12%);
   }
 `;
 
@@ -90,6 +100,15 @@ const NavLogo = styled(Link)`
   font-size: 25px;
   font-family: '잘풀리는오늘';
   transform: none;
+`;
+
+const MobileHide = styled.div`
+  display: flex;
+  flex: 1 0 auto;
+
+  @media only screen and (max-width: ${mediaQuery.BREAK_POINT_MOBILE}px) {
+    display: none;
+  }
 `;
 
 const Gnb = styled.nav`
@@ -111,6 +130,10 @@ const GnbMenu = styled(Link)`
 
 const NavSearch = styled.div`
   position: relative;
+
+  @media only screen and (max-width: ${mediaQuery.BREAK_POINT_TABLET}px) {
+    display: none;
+  }
 `;
 
 const NavSearchText = styled.input`
@@ -151,14 +174,17 @@ const CartIcon = styled(Icons)`
   position: relative;
   top: 1px;
   margin: 0 9px;
+  padding: 14px 6px;
+  cursor: pointer;
 `;
 
 const LoginIcon = styled.div`
   display: flex;
+  padding: 14px 6px;
   color: ${({ theme }) => theme.NavGrayFontColor};
 `;
 
-const NavLogin = styled.div`
+const NavLogin = styled(Link)`
   position: relative;
   margin: 0 9px;
   font-size: 15px;
@@ -169,7 +195,7 @@ const NavLogin = styled.div`
     content: '';
     position: absolute;
     top: 2px;
-    right: -25%;
+    right: -17%;
     width: 1px;
     height: 15px;
     background-color: ${({ theme }) => theme.NavGrayFontColor};
@@ -203,6 +229,12 @@ const NavWriteBtn = styled.button`
 const BottomNavContainer = styled.div`
   height: 50px;
   border-bottom: 1px solid ${({ theme }) => theme.borderLine};
+  min-width: 760px;
+  overflow: hidden;
+
+  @media only screen and (max-width: ${mediaQuery.BREAK_POINT_MOBILE}px) {
+    text-align: center;
+  }
 `;
 
 const BottomNavContainerInnerWrapper = styled.div`
@@ -211,6 +243,10 @@ const BottomNavContainerInnerWrapper = styled.div`
   height: 50px;
   margin: 0 auto;
   padding: 10px 60px;
+
+  @media only screen and (max-width: ${mediaQuery.BREAK_POINT_TABLET}px) {
+    padding: 10px 40px;
+  }
 `;
 
 const CommunityMenuWrapper = styled.ul`
@@ -221,10 +257,11 @@ const CommunityMenuWrapper = styled.ul`
 `;
 
 const CommunityMenuCategories = styled(Link)`
-  margin-right: 30px;
+  padding: 8px;
+  margin: 4px;
   color: ${({ theme, isselected }) =>
     isselected ? theme.mainBlue : theme.fontMainBlack};
-  font-size: 16px;
+  font-size: 15px;
   text-decoration: none;
 
   &:hover {
@@ -238,10 +275,15 @@ const RightSideMenuWrapper = styled(Link)`
   justify-content: flex-end;
   width: 20%;
   text-decoration: none;
+
+  @media only screen and (max-width: ${mediaQuery.BREAK_POINT_MOBILE}px) {
+    display: none;
+    left: 0;
+  }
 `;
 
 const BankHouseLogo = styled.img`
-  width: 15px;
+  width: 20px;
   height: 15px;
   padding-right: 5px;
 `;
