@@ -13,7 +13,7 @@ const COMMUNITY_CATEGORY_LIST = [
   { menuName: '전문가집들이', path: '/experthouseparty' },
   { menuName: '셀프가이드', path: '/selfguide' },
   { menuName: '질문과답변', path: '/questionandanswer' },
-  { menuName: '이벤트', path: '/event' },
+  // { menuName: '이벤트', path: '/event' },
 ];
 
 function Nav({ theme }) {
