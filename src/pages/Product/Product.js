@@ -1,18 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import { withRouter, useLocation } from 'react-router-dom';
+import styled, { css } from 'styled-components/macro';
 import { flexSet } from '../../styles/Variable';
+import Nav from '../../components/Nav/Nav';
+import Footer from '../../components/Footer/Footer';
+import { GET_BASE_URL } from '../../config';
 
-function Product({ theme }) {
+function Product({ history, theme }) {
+  const location = useLocation();
   const [inputValue, setInputValue] = useState('');
   const [commentList, setCommentList] = useState([]);
   const [opacity, setOpacity] = useState(true);
+  const [productList, setProductList] = useState({});
+  const path = location.pathname.replace('/product/', '');
+  //useParams로 하면 replace 안해도 되지 않았을까?
 
   useEffect(() => {
-    fetch('/data/comment.json')
+    //product API
+    fetch(`${GET_BASE_URL}/posts/${path}`)
       .then(res => res.json())
-      .then(res => setCommentList(res.data.comment));
-  }, []);
+      .then(res => setProductList(res.results));
+
+    //comment API
+    fetch(`${GET_BASE_URL}/posts/comments/${path}`)
+      .then(res => res.json())
+      .then(res => setCommentList(res.data));
+  }, [path]);
 
   const onChangeCommentInput = e => {
     setInputValue(e.target.value);
@@ -21,148 +34,160 @@ function Product({ theme }) {
 
   const onSubmitComment = e => {
     e.preventDefault();
-    //TODO: 백엔드 API 완성 후 구체화 예정
-    // fetch(API, {
-    // method: 'POST',
-    //   headers: {
-    //     Authorization: localStorage.getItem('accessToken'),
-    //   },
-    //  body: JSON.stringify({
-    //   }),
-    // })
-    // .then(res => res.json())
-    // .then(data => )
+    fetch(`${GET_BASE_URL}/posts/comments`, {
+      method: 'POST',
+      headers: {
+        Authorization: localStorage.getItem('access_token'),
+      },
+      body: JSON.stringify({
+        post_id: path,
+        content: inputValue,
+      }),
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.message === 'SUCCESS') {
+          fetch(`${GET_BASE_URL}/posts/comments/${path}`)
+            .then(res => res.json())
+            .then(res => setCommentList(res.data));
+        }
+      });
   };
 
-  const onClickCommentHeart = () => {
-    //TODO: 백엔드 API 완성 후 구체화 예정
-    // fetch(API, {
-    // method: 'POST',
-    //   headers: {
-    //     Authorization: localStorage.getItem('accessToken'),
-    //   },
-    //  body: JSON.stringify({
-    // })
-    // .then(res => res.json())
-    // .then(data => )
+  const onClickArticleDelete = () => {
+    console.log(`path`, path);
+    fetch(`${GET_BASE_URL}/posts/${path}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: localStorage.getItem('access_token'),
+      },
+    }).then(data => console.log(`data`, data));
+    history.push(`/`);
   };
 
-  const onClickURL = e => {
+  const onCopyURL = () => {
     navigator.clipboard.writeText(window.location.href);
     alert('클립보드에 복사되었습니다.');
   };
 
-  const timeForToday = postedTime => {
+  const timeFromNow = postedTime => {
     const today = new Date();
-    const timeValue = new Date(postedTime);
+    const postedDate = new Date(postedTime);
 
-    const betweenTime = Math.floor(
-      (today.getTime() - timeValue.getTime()) / 1000 / 60
+    const minutesDiff = Math.floor(
+      (today.getTime() - postedDate.getTime()) / 1000 / 60
     );
-    if (betweenTime < 1) return '방금전';
-    if (betweenTime < 60) {
-      return `${betweenTime}분전`;
-    }
+    const hourDiff = Math.floor(minutesDiff / 60);
+    const dayDiff = Math.floor(minutesDiff / 60 / 24);
+    const monthDiff = Math.floor(minutesDiff / 60 / 24 / 30);
 
-    const betweenTimeHour = Math.floor(betweenTime / 60);
-    const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-    const betweenTimeMonth = Math.floor(betweenTime / 60 / 24 / 30);
-
-    if (betweenTimeHour < 24) {
-      return `${betweenTimeHour}시간전`;
+    if (minutesDiff < 1) return '방금전';
+    if (minutesDiff < 60) {
+      return `${minutesDiff}분 전`;
     }
-    if (betweenTimeDay < 31) {
-      return `${betweenTimeDay}일전`;
+    if (hourDiff < 24) {
+      return `${hourDiff}시간 전`;
     }
-    if (betweenTimeMonth < 12) {
-      return `${betweenTimeMonth}달전`;
+    if (dayDiff < 31) {
+      return `${dayDiff}일 전`;
     }
-    return `${Math.floor(betweenTimeDay / 365)}년전`;
+    if (monthDiff < 12) {
+      return `${monthDiff}달 전`;
+    }
+    return `${Math.floor(dayDiff / 365)}년 전`;
   };
 
-  // json date 값을 "2021-05-23T23:19:20+0000" 형식으로 변경
+  //2021-06-01T01:08:38.348Z 값을
+  //"2021-05-23T23:19:20+0000" 형식으로 변경
   const postedDate = date => {
-    let timeSplit = date.slice(0, 19).split(' ');
-    let posted = new Date(`${timeSplit[0]}T${timeSplit[1]}+0000`);
-    return timeForToday(posted.getTime());
+    const timeSplit = date.slice(0, 19);
+    const posted = new Date(`${timeSplit}+0000`);
+    return timeFromNow(posted.getTime());
   };
 
   return (
-    <Wrapper>
-      <Article>
-        <div>
-          <ProductHeader>
-            <div>30평대</div>
-            <div>이틀 전</div>
-          </ProductHeader>
-          <ProductImgContainer>
-            <ProductImg
-              src="https://images.unsplash.com/photo-1501924497965-792fefaea3dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80"
-              alt="product"
-            />
-          </ProductImgContainer>
-          <div></div>
-        </div>
-        <div>
-          <CommentCount>
-            댓글 <CommentCountNum>{commentList.length}</CommentCountNum>
-          </CommentCount>
-          <InputContainer>
-            <FaSmile className="fas fa-smile"></FaSmile>
-            <form onSubmit={onSubmitComment}>
-              <CommentInput
-                type="text"
-                name="comment"
-                placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다 :)"
-                value={inputValue}
-                onChange={onChangeCommentInput}
-              />
-              <Register alert={opacity}>등록</Register>
-            </form>
-          </InputContainer>
-          {commentList.map(({ id, img_url, user, content, date, like }) => {
-            return (
-              <Comment key={id}>
-                <Circle alt="user face" src={img_url} />
-                <CommentFeed>
-                  <UserAndContent>
-                    <User>{user}</User>
-                    <div>{content}</div>
-                  </UserAndContent>
-                  <CommentInfo>
-                    <Time>{postedDate(date)}</Time>
-                    <CommentHeart onClick={onClickCommentHeart}>
-                      <FaHeart className="far fa-heart"></FaHeart>
-                      <span>{like}</span>
-                    </CommentHeart>
-                  </CommentInfo>
-                </CommentFeed>
-              </Comment>
-            );
-          })}
-        </div>
-      </Article>
-      <Aside>
-        <div>
-          <LikeButton>
-            <FaHeart className="far fa-heart"></FaHeart>22
-          </LikeButton>
-          <Profile>
-            <UserInfo>
-              <Circle
-                alt="user face"
-                src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
-              />
-              <Name>jiyon</Name>
-            </UserInfo>
-            <Follow>팔로우</Follow>
-          </Profile>
-        </div>
-        <Circle as="div" onClick={onClickURL}>
-          URL
-        </Circle>
-      </Aside>
-    </Wrapper>
+    <>
+      <Nav />
+      <Wrapper>
+        <Article>
+          <div>
+            <ProductHeader>
+              <div>{productList.size}</div>
+              <div>{postedDate(`${productList.posted_time}`)}</div>
+            </ProductHeader>
+            <ProductImgContainer>
+              <ProductImg src={productList.imgURL} alt="product" />
+            </ProductImgContainer>
+          </div>
+          <div>
+            <CommentCount>
+              댓글
+              <CommentCountNum>{commentList?.length}</CommentCountNum>
+            </CommentCount>
+            <InputContainer>
+              <FaSmile className="fas fa-smile"></FaSmile>
+              <form onSubmit={onSubmitComment}>
+                <CommentInput
+                  type="text"
+                  name="comment"
+                  placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다 :)"
+                  value={inputValue}
+                  onChange={onChangeCommentInput}
+                />
+                <Register alert={opacity}>등록</Register>
+              </form>
+            </InputContainer>
+            {commentList?.map(({ id, img_url, nickname, comment, date }) => {
+              return (
+                <Comment key={id}>
+                  <Circle alt="user face" src={'/images/user.png'} />
+                  <CommentFeed>
+                    <UserAndContent>
+                      <User>{nickname}</User>
+                      <div>{comment}</div>
+                    </UserAndContent>
+                    <CommentInfo>
+                      <Time>{postedDate(date)}</Time>
+                      <CommentHeart>
+                        <FaHeart className="far fa-heart"></FaHeart>
+                      </CommentHeart>
+                    </CommentInfo>
+                  </CommentFeed>
+                </Comment>
+              );
+            })}
+          </div>
+        </Article>
+        <Aside>
+          <div>
+            <LikeAndDelete>
+              <LikeBtn>
+                <FaHeart className="far fa-heart" />
+                {productList.liked}
+              </LikeBtn>
+              <DeleteBtn onClick={onClickArticleDelete}>
+                <i className="fas fa-trash"></i>
+              </DeleteBtn>
+            </LikeAndDelete>
+            <Profile>
+              {productList.liked_nickname?.map(profile => (
+                <UserInfo key={Math.random()}>
+                  <ProfileAndName>
+                    <Circle alt="user face" src="/images/user.png" />
+                    <Name>{profile}</Name>
+                  </ProfileAndName>
+                  <Follow>팔로우</Follow>
+                </UserInfo>
+              ))}
+            </Profile>
+          </div>
+          <Circle as="div" onClick={onCopyURL}>
+            URL
+          </Circle>
+        </Aside>
+      </Wrapper>
+      <Footer />
+    </>
   );
 }
 
@@ -209,6 +234,7 @@ const CommentCount = styled.div`
 `;
 
 const CommentCountNum = styled.span`
+  margin-left: 10px;
   color: ${props => props.theme.mainBlue};
 `;
 
@@ -316,10 +342,16 @@ const FaHeart = styled.div`
   color: ${props => props.theme.fontMainBlack};
 `;
 
-const LikeButton = styled.button`
-  width: 260px;
+const LikeAndDelete = styled.div`
+  ${flexSet('space-between')}
+  width: 100%;
+`;
+
+const LikeBtn = styled.button`
+  width: 100px;
   height: 50px;
   margin-bottom: 25px;
+  margin-right: 20px;
   line-height: 50px;
   background-color: ${props => props.theme.backgroundGrey};
   border-radius: 10px;
@@ -330,17 +362,37 @@ const LikeButton = styled.button`
   }
 `;
 
+const DeleteBtn = styled.button`
+  width: 100px;
+  height: 50px;
+  margin-bottom: 25px;
+  line-height: 50px;
+  background-color: ${props => props.theme.backgroundGrey};
+  border-radius: 10px;
+  font-size: 15px;
+  border-color: red;
+
+  &:hover {
+    background-color: ${props => props.theme.borderLine};
+  }
+`;
+
 const Profile = styled.div`
-  ${flexSet('space-between', 'center')}
+  ${flexSet('space-between', 'space-between')}
+  flex-direction: column;
 `;
 
 const UserInfo = styled.div`
-  ${flexSet('start', 'center')}
+  ${flexSet('space-between', 'center')}
   cursor: pointer;
+  margin-bottom: 10px;
 
   &:hover {
     color: grey;
   }
+`;
+const ProfileAndName = styled.div`
+  ${flexSet()}
 `;
 
 const Name = styled.div`
